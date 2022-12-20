@@ -1,0 +1,25 @@
+{% extends "generic.html" %}
+{% block title %}<title>Book Details</title>{% endblock %}
+{% block main %}
+    <main class="container-fluid px-3 px-md-5">
+        <section class="row">
+            <h1 class="mb-5 text-center">Book details</h1>
+            <section class="col-md-6">
+                <h2>{{ book.title }}</h2>
+                <p>Author: {{ book.author }}</p>
+                <p>Category: {{ book.category }}</p>
+                <p>Release date: {{ book.release_date }}</p>
+                <p>Number of pages: {{ book.number_of_pages }}</p>
+                <p>Description: {{ book.book_description }}</p>
+            </section>
+            <section class="col-md-6 text-center">
+                <img src="{{ book.cover.url }}"
+                     alt="Cover for {{ book.title }}"
+                     class="h-50"/>
+                <h2 class="my-3">{{ book.price }}$</h2>
+                <button class="btn btn-primary">Buy</button>
+                <button class="btn btn-outline-primary">Add to shopping cart</button>
+            </section>
+        </section>
+    </main>
+{% endblock %}

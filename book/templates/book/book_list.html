@@ -1,0 +1,65 @@
+{% extends "generic.html" %}
+{% block title %}<title>Book List</title>{% endblock %}
+{% block main %}
+    <main class="container-fluid px-3 px-md-5">
+        <h1 class="mb-5 text-center">Book List</h1>
+        <form method="get"
+              action="{% url 'book_search' %}"
+              class="row mb-5 justify-content-end">
+            <div class="col-auto">
+                <label for="book-search">Search a book</label>
+            </div>
+            <div class="col-auto">{{ form.as_div }}</div>
+            <div class="col-auto">
+                <button class="btn btn-outline-primary col-auto">Search</button>
+            </div>
+        </form>
+        {% if object_list %}
+            <section class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 row-cols-xl-6 g-5 mx-5">
+                {% for book in object_list %}
+                    <article class="col">
+                        <div class="card h-100">
+                            <img src="{{ book.cover.url }}"
+                                 alt="Cover for {{ book.title }}"
+                                 class="card-img-top h-50"/>
+                            <div class="card-body">
+                                <a href="{% url 'book_detail' book.pk %}" class="card-title">{{ book.title }}</a>
+                                <p class="card-text">By {{ book.author }}, released in {{ book.release_date }}</p>
+                            </div>
+                        </div>
+                    </article>
+                {% endfor %}
+            </section>
+        {% else %}
+            <h2 class="text-center">No book available.</h2>
+        {% endif %}
+        <nav class="pagination justify-content-end">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1">First</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                    </li>
+                {% endif %}
+                <li class="page-item active">
+                    <a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}</a>
+                </li>
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </main>
+    <style>
+        .card-title {
+            -webkit-line-clamp: 3;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
+{% endblock %}

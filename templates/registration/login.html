@@ -1,0 +1,16 @@
+{% extends "generic.html" %}
+{% block header %}
+    <header class="container-fluid d-flex flex-wrap border-bottom py-2 mb-3 bg-light align-items-center justify-content-between">
+        <h1>Book Website</h1>
+    </header>
+{% endblock %}
+{% block main %}
+    <main class="container text-center">
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            {{ form.as_div }}
+            <button class="btn btn-primary mt-3">Login</button>
+            <input type="hidden" name="next" value="{{ next }}"/>
+        </form>
+    </main>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "generic.html" %}
+{% block header %}
+    <header class="container-fluid d-flex flex-wrap border-bottom py-2 mb-3 bg-light align-items-center justify-content-between">
+        <h1>Book Website</h1>
+    </header>
+{% endblock %}
+{% block main %}
+    <form action="" method="post" class="container row">
+        {% csrf_token %}
+        {{ form.as_div }}
+        <button class="btn btn-primary col-sm-2">Register</button>
+    </form>
+{% endblock %}
