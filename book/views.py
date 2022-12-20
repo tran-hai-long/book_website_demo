@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.views.generic import ListView, DetailView
 
@@ -36,6 +37,7 @@ class BookSearchView(ListView):
             return super().get_queryset().filter(title__icontains=search_term)
 
 
+@login_required
 def add_to_cart(request, pk):
     cart = ShoppingCart.objects.get(user_id=request.user.pk)
     book = Book.objects.get(pk=pk)
