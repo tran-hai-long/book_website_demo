@@ -13,12 +13,15 @@
                 <p>Description: {{ book.book_description }}</p>
             </section>
             <section class="col-md-6 text-center">
-                <img src="{{ book.cover.url }}"
-                     alt="Cover for {{ book.title }}"
-                     class="h-50"/>
+                {% if book.cover %}
+                    <img src="{{ book.cover.url }}" alt="Cover for {{ book.title }}" class="h-50"/>
+                {% endif %}
                 <h2 class="my-3">{{ book.price }}$</h2>
                 <button class="btn btn-primary">Buy</button>
-                <button class="btn btn-outline-primary">Add to shopping cart</button>
+                <form method="post" action="{% url 'add_book_to_cart' book.pk %}">
+                    {% csrf_token %}
+                    <button class="btn btn-outline-primary">Add to shopping cart</button>
+                </form>
             </section>
         </section>
     </main>

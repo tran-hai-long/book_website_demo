@@ -19,9 +19,11 @@
                 {% for book in object_list %}
                     <article class="col">
                         <div class="card h-100">
-                            <img src="{{ book.cover.url }}"
-                                 alt="Cover for {{ book.title }}"
-                                 class="card-img-top h-50"/>
+                            {% if book.cover %}
+                                <img src="{{ book.cover.url }}"
+                                     alt="Cover for {{ book.title }}"
+                                     class="card-img-top h-50"/>
+                            {% endif %}
                             <div class="card-body">
                                 <a href="{% url 'book_detail' book.pk %}" class="card-title">{{ book.title }}</a>
                                 <p class="card-text">By {{ book.author }}, released in {{ book.release_date }}</p>
