@@ -5,9 +5,11 @@
     </header>
 {% endblock %}
 {% block main %}
-    <form action="" method="post" class="container row">
-        {% csrf_token %}
-        {{ form.as_div }}
-        <button class="btn btn-primary col-sm-2">Register</button>
-    </form>
+    <main class="container">
+        <form action="" method="post" class="row">
+            {% csrf_token %}
+            {{ form.as_div }}
+            <button class="btn btn-primary col-sm-2">Register</button>
+        </form>
+    </main>
 {% endblock %}
