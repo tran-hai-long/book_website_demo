@@ -13,21 +13,24 @@
                 <p>Description: {{ book.book_description }}</p>
             </section>
             <section class="col-md-6 text-center">
-                {% if book.cover %}
-                    <img src="{{ book.cover.url }}" alt="Cover for {{ book.title }}" class="h-50"/>
-                {% endif %}
+                {% if book.cover %}<img src="{{ book.cover.url }}"
+     alt="Cover for {{ book.title }}"
+     class="h-50"/>{% endif %}
                 <h2 class="my-3">{{ book.price }}$</h2>
-                <button class="btn btn-primary">Buy</button>
-                {% for item in books_in_cart %}
-                    {% if item.book_id == book.pk %}
-                        <p>Book already in cart.</p>
-                    {% endif %}
-                {% endfor %}
+                <button class="btn btn-primary mb-3">Buy</button>
                 <form method="post" action="{% url 'add_book_to_cart' book.pk %}">
                     {% csrf_token %}
-                    <button class="btn btn-outline-primary">Add to shopping cart</button>
+                    <button class="btn btn-outline-primary mb-3" id="add-to-cart">Add to shopping cart</button>
                 </form>
+                {% for item in books_in_cart %}
+                    {% if item.book_id == book.pk %}<p id="already-in-cart">Book already in cart.</p>{% endif %}
+                {% endfor %}
             </section>
         </section>
     </main>
+    <script>
+        if(document.getElementById("already-in-cart")) {
+            document.getElementById("add-to-cart").disabled = true
+        }
+    </script>
 {% endblock %}
