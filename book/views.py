@@ -21,7 +21,7 @@ class BookDetailView(DetailView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(BookDetailView, self).get_context_data(**kwargs)
-        context["books_in_cart"] = BookInCart.objects.all()
+        context["books_in_cart"] = BookInCart.objects.filter(cart_id=self.request.user.pk)
         return context
 
 

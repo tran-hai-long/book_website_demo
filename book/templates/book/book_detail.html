@@ -19,7 +19,7 @@
                 <h2 class="my-3">{{ book.price }}$</h2>
                 <button class="btn btn-primary">Buy</button>
                 {% for item in books_in_cart %}
-                    {% if item.book_id == book.pk and item.cart_id == user.pk %}
+                    {% if item.book_id == book.pk %}
                         <p>Book already in cart.</p>
                     {% endif %}
                 {% endfor %}
