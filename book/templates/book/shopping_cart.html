@@ -2,13 +2,31 @@
 {% block title %}<title>Shopping Cart</title>{% endblock %}
 {% block main %}
     <main class="container-fluid">
-        <ol>
-            {% for book_in_cart in object_list %}
-                <li>
-                    {{ book_in_cart.book.title }} by {{ book_in_cart.book.author }}
-                    <a href="{% url 'remove_from_cart' book_in_cart.book.pk %}">[X]</a>
-                </li>
-            {% endfor %}
-        </ol>
+        {% if object_list %}
+            <h1 class="text-center mb-3">Shopping Cart</h1>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Price</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                {% for book_in_cart in object_list %}
+                    <tr>
+                        <td>{{ book_in_cart.book.title }}</td>
+                        <td>{{ book_in_cart.book.author }}</td>
+                        <td>{{ book_in_cart.book.price }}</td>
+                        <td>
+                            <a href="{% url 'remove_from_cart' book_in_cart.book.pk %}"
+                               class="btn btn-outline-danger">Remove</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <h1 class="text-center">Your shopping cart is empty.</h1>
+        {% endif %}
     </main>
 {% endblock %}
