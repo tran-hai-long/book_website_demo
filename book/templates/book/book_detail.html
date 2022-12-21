@@ -18,19 +18,15 @@
      class="h-50"/>{% endif %}
                 <h2 class="my-3">{{ book.price }}$</h2>
                 <button class="btn btn-primary mb-3">Buy</button>
-                <form method="post" action="{% url 'add_book_to_cart' book.pk %}">
-                    {% csrf_token %}
-                    <button class="btn btn-outline-primary mb-3" id="add-to-cart">Add to shopping cart</button>
-                </form>
-                {% for item in books_in_cart %}
-                    {% if item.book_id == book.pk %}<p id="already-in-cart">Book already in cart.</p>{% endif %}
-                {% endfor %}
+                {% if books_in_cart %}
+                    <p id="already-in-cart">Book already in cart.</p>
+                {% else %}
+                    <form method="post" action="{% url 'add_book_to_cart' book.pk %}">
+                        {% csrf_token %}
+                        <button class="btn btn-outline-primary mb-3" id="add-to-cart">Add to shopping cart</button>
+                    </form>
+                {% endif %}
             </section>
         </section>
     </main>
-    <script>
-        if(document.getElementById("already-in-cart")) {
-            document.getElementById("add-to-cart").disabled = true
-        }
-    </script>
 {% endblock %}
