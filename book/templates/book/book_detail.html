@@ -4,6 +4,9 @@
     <main class="container-fluid px-3 px-md-5">
         <section class="row">
             <h1 class="mb-5 text-center">Book details</h1>
+            <div class="text-end mb-3">
+                <a href="{% url 'shopping_cart' %}" class="btn btn-outline-secondary"> Shopping Cart</a>
+            </div>
             <section class="col-md-6">
                 <h2>{{ book.title }}</h2>
                 <p>Author: {{ book.author }}</p>
