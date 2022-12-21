@@ -1,5 +1,7 @@
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
+from django.urls import reverse
 from django.views.generic import ListView, DetailView
 
 from book.forms import BookSearchForm
@@ -42,4 +44,4 @@ def add_to_cart(request, pk):
     cart = ShoppingCart.objects.get(user_id=request.user.pk)
     book = Book.objects.get(pk=pk)
     BookInCart(cart_id=cart.pk, book_id=book.pk).save()
-    return redirect("/books/")
+    return HttpResponseRedirect(reverse("book_detail", args=[book.pk]))
