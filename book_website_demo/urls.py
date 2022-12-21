@@ -20,9 +20,9 @@ from django.urls import include, path
 from django.views.generic import RedirectView
 
 urlpatterns = [
-                  path("admin/", admin.site.urls),
-                  path("books/", include("book.urls")),
-                  path("", RedirectView.as_view(url="books/")),
-                  path("accounts/", include("django.contrib.auth.urls")),
-                  path("registration/", include("registration.urls")),
-              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path("admin/", admin.site.urls),
+    path("books/", include("book.urls")),
+    path("", RedirectView.as_view(url="books/")),
+    path("accounts/", include("django.contrib.auth.urls")),
+    path("registration/", include("registration.urls")),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
