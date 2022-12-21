@@ -4,7 +4,10 @@
     <main class="container-fluid">
         <ol>
             {% for book_in_cart in object_list %}
-                <li>{{ book_in_cart.book.title }} by {{ book_in_cart.book.author }}</li>
+                <li>
+                    {{ book_in_cart.book.title }} by {{ book_in_cart.book.author }}
+                    <a href="{% url 'remove_from_cart' book_in_cart.book.pk %}">[X]</a>
+                </li>
             {% endfor %}
         </ol>
     </main>

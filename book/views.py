@@ -45,14 +45,6 @@ class BookSearchView(ListView):
             return super().get_queryset().filter(title__icontains=search_term)
 
 
-@login_required
-def add_to_cart(request, pk):
-    cart = ShoppingCart.objects.get(user_id=request.user.pk)
-    book = Book.objects.get(pk=pk)
-    BookInCart(cart_id=cart.pk, book_id=book.pk).save()
-    return HttpResponseRedirect(reverse("book_detail", args=[book.pk]))
-
-
 @method_decorator(login_required, name="dispatch")
 class ShoppingCartView(ListView):
     model = BookInCart
@@ -60,3 +52,17 @@ class ShoppingCartView(ListView):
 
     def get_queryset(self):
         return super().get_queryset().filter(cart_id=self.request.user.pk)
+
+
+@login_required
+def add_to_cart(request, pk):
+    cart = ShoppingCart.objects.get(user_id=request.user.pk)
+    BookInCart(cart_id=cart.pk, book_id=pk).save()
+    return HttpResponseRedirect(reverse("book_detail", args=[pk]))
+
+
+@login_required
+def remove_from_cart(request, pk):
+    cart = ShoppingCart.objects.get(user_id=request.user.pk)
+    BookInCart.objects.get(cart_id=cart.pk, book_id=pk).delete()
+    return HttpResponseRedirect(reverse("shopping_cart"))
