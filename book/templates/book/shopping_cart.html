@@ -1,0 +1,11 @@
+{% extends "generic.html" %}
+{% block title %}<title>Shopping Cart</title>{% endblock %}
+{% block main %}
+    <main class="container-fluid">
+        <ol>
+            {% for book_in_cart in object_list %}
+                <li>{{ book_in_cart.book.title }} by {{ book_in_cart.book.author }}</li>
+            {% endfor %}
+        </ol>
+    </main>
+{% endblock %}
