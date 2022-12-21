@@ -31,6 +31,12 @@ class BookDetailView(DetailView):
 class BookSearchView(ListView):
     model = Book
     paginate_by = 20
+    search_form = BookSearchForm()
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(BookSearchView, self).get_context_data(**kwargs)
+        context["form"] = self.search_form
+        return context
 
     def get_queryset(self):
         form = BookSearchForm(self.request.GET)
