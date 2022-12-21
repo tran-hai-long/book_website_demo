@@ -53,7 +53,7 @@ def add_to_cart(request, pk):
     return HttpResponseRedirect(reverse("book_detail", args=[book.pk]))
 
 
-@method_decorator(login_required, name='dispatch')
+@method_decorator(login_required, name="dispatch")
 class ShoppingCartView(ListView):
     model = BookInCart
     template_name = "book/shopping_cart.html"
