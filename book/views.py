@@ -1,11 +1,11 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, DetailView
 
 from book.forms import BookSearchForm, RatingForm
-from book.models import Book, ShoppingCart, BookInCart
+from book.models import Book, ShoppingCart, BookInCart, Rating
 
 
 class BookListView(ListView):
@@ -72,3 +72,14 @@ def remove_from_cart(request, pk):
     cart = ShoppingCart.objects.get(user_id=request.user.pk)
     BookInCart.objects.get(cart_id=cart.pk, book_id=pk).delete()
     return HttpResponseRedirect(reverse("shopping_cart"))
+
+
+def rate_book(request, pk):
+    form = RatingForm(request.POST)
+    if form.is_valid():
+        Rating.objects.create(
+            user_id=request.user.pk, book_id=pk, star=form.cleaned_data["star"], comment=form.cleaned_data["comment"]
+        )
+    else:
+        return HttpResponse("Error when rating this book.")
+    return HttpResponseRedirect(reverse("book_detail", args=[pk]))

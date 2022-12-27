@@ -32,7 +32,13 @@
                     </form>
                 {% endif %}
             </section>
-            {% if user.is_authenticated %}<div>{{ rating_form.as_div }}</div>{% endif %}
+            {% if user.is_authenticated %}
+                <form method="post" action="{% url 'rate_book' book.pk %}">
+                    {% csrf_token %}
+                    {{ rating_form.as_div }}
+                    <button class="btn btn-outline-primary">Rate this book</button>
+                </form>
+            {% endif %}
         </section>
     </main>
 {% endblock %}
