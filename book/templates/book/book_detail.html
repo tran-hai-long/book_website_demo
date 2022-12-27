@@ -32,6 +32,7 @@
                     </form>
                 {% endif %}
             </section>
+            {% if user.is_authenticated %}<div>{{ rating_form.as_div }}</div>{% endif %}
         </section>
     </main>
 {% endblock %}
