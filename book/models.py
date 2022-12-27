@@ -54,3 +54,6 @@ class Rating(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     star = models.PositiveSmallIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(5)])
     comment = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return f"User {self.user.username} rated {self.star}-star for book {self.book.pk} - {self.book.title}"
