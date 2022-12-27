@@ -6,6 +6,7 @@ from django.urls import reverse
 
 from django.contrib.auth.password_validation import validate_password
 
+from book.models import ShoppingCart
 from registration.forms import RegistrationForm
 
 
@@ -18,13 +19,14 @@ def registration_page(request):
             except ValidationError as e:
                 context = {"form": RegistrationForm(), "password_error": str(e)}
                 return render(request, "registration/registration.html", context)
-            User.objects.create_user(
+            user = User.objects.create_user(
                 form.cleaned_data["username"],
                 form.cleaned_data["email"],
                 form.cleaned_data["password"],
                 first_name=form.cleaned_data["first_name"],
                 last_name=form.cleaned_data["last_name"],
             )
+            ShoppingCart.objects.create(user_id=user.pk)
             return HttpResponseRedirect(reverse("book_list"))
         else:
             return HttpResponse("User creation error.")
