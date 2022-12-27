@@ -12,6 +12,7 @@ class BookListView(ListView):
     model = Book
     paginate_by = 20
     search_form = BookSearchForm()
+    ordering = ["title", "author", "release_date"]
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(BookListView, self).get_context_data(**kwargs)
@@ -32,6 +33,7 @@ class BookSearchView(ListView):
     model = Book
     paginate_by = 20
     search_form = BookSearchForm()
+    ordering = ["title", "author", "release_date"]
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(BookSearchView, self).get_context_data(**kwargs)
