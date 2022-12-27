@@ -47,3 +47,10 @@ class BookInCart(models.Model):
 
     def __str__(self):
         return f"book {self.book} in cart {self.cart}."
+
+
+class Rating(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    star = models.PositiveSmallIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(5)])
+    comment = models.TextField(null=True, blank=True)
