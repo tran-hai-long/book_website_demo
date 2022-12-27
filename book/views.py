@@ -25,7 +25,9 @@ class BookDetailView(DetailView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(BookDetailView, self).get_context_data(**kwargs)
-        context["books_in_cart"] = BookInCart.objects.filter(cart_id=self.request.user.pk, book_id=self.object.pk)
+        context["books_in_cart"] = BookInCart.objects.filter(
+            cart_id=ShoppingCart.objects.get(user_id=self.request.user.pk), book_id=self.object.pk
+        )
         return context
 
 
@@ -53,7 +55,7 @@ class ShoppingCartView(ListView):
     template_name = "book/shopping_cart.html"
 
     def get_queryset(self):
-        return super().get_queryset().filter(cart_id=self.request.user.pk)
+        return super().get_queryset().filter(cart_id=ShoppingCart.objects.get(user_id=self.request.user.pk))
 
 
 @login_required
