@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, DetailView
 
-from book.forms import BookSearchForm
+from book.forms import BookSearchForm, RatingForm
 from book.models import Book, ShoppingCart, BookInCart
 
 
@@ -25,9 +25,11 @@ class BookDetailView(DetailView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(BookDetailView, self).get_context_data(**kwargs)
-        context["books_in_cart"] = BookInCart.objects.filter(
-            cart_id=ShoppingCart.objects.get(user_id=self.request.user.pk), book_id=self.object.pk
-        )
+        if self.request.user.is_authenticated:
+            context["books_in_cart"] = BookInCart.objects.filter(
+                cart_id=ShoppingCart.objects.get(user_id=self.request.user.pk), book_id=self.object.pk
+            )
+        context["rating_form"] = RatingForm()
         return context
 
 
