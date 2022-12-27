@@ -43,7 +43,7 @@ class ShoppingCart(models.Model):
 
 class BookInCart(models.Model):
     cart = models.ForeignKey(ShoppingCart, on_delete=models.CASCADE)
-    book = models.OneToOneField(Book, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"book {self.book} in cart {self.cart}."
