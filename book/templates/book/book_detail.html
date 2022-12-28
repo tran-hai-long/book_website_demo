@@ -33,12 +33,12 @@
                 {% endif %}
             </section>
         </section>
-        <div>
+        <div class="container row">
             {% if user.is_authenticated %}
                 <form method="post" action="{% url 'review_book' book.pk %}">
                     {% csrf_token %}
-                    {{ review_form.as_div }}
-                    <button class="btn btn-outline-primary">Review</button>
+                    <div class="col-md-6 col-lg-4">{{ review_form }}</div>
+                    <button class="btn btn-outline-primary col-auto">Review</button>
                 </form>
             {% endif %}
         </div>
