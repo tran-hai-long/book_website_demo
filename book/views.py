@@ -23,6 +23,24 @@ class BookListView(ListView):
         return context
 
 
+class BookSearchView(ListView):
+    model = Book
+    paginate_by = 20
+    search_form = BookSearchForm()
+    ordering = ["title", "author", "release_date"]
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(BookSearchView, self).get_context_data(**kwargs)
+        context["form"] = self.search_form
+        return context
+
+    def get_queryset(self):
+        form = BookSearchForm(self.request.GET)
+        if form.is_valid():
+            search_term = form.cleaned_data["title"]
+            return super().get_queryset().filter(title__icontains=search_term)
+
+
 class BookDetailView(DetailView):
     model = Book
 
@@ -42,22 +60,20 @@ class BookDetailView(DetailView):
         return context
 
 
-class BookSearchView(ListView):
-    model = Book
-    paginate_by = 20
-    search_form = BookSearchForm()
-    ordering = ["title", "author", "release_date"]
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super(BookSearchView, self).get_context_data(**kwargs)
-        context["form"] = self.search_form
-        return context
-
-    def get_queryset(self):
-        form = BookSearchForm(self.request.GET)
-        if form.is_valid():
-            search_term = form.cleaned_data["title"]
-            return super().get_queryset().filter(title__icontains=search_term)
+@login_required
+def review_book(request, pk):
+    form = ReviewForm(request.POST)
+    if form.is_valid():
+        Review.objects.create(
+            user_id=request.user.pk,
+            book_id=pk,
+            rating=form.cleaned_data["rating"],
+            comment=form.cleaned_data["comment"],
+            date=timezone.now(),
+        )
+    else:
+        return HttpResponse("Error when trying to review this book.")
+    return HttpResponseRedirect(reverse("book_detail", args=[pk]))
 
 
 @method_decorator(login_required, name="dispatch")
@@ -78,34 +94,12 @@ class ShoppingCartView(ListView):
         return context
 
 
-@method_decorator(login_required, name="dispatch")
-class InvoiceView(ListView):
-    model = Invoice
-    ordering = ["-date"]
-
-    def get_queryset(self):
-        return super().get_queryset().filter(user_id=self.request.user.pk)
-
-
-@method_decorator(login_required, name="dispatch")
-class PurchasedBookView(ListView):
-    model = PurchasedBook
-
-    def get_queryset(self):
-        invoice_id = self.kwargs["pk"]
-        invoice = Invoice.objects.get(pk=invoice_id)
-        if invoice.user_id == self.request.user.pk:
-            return super().get_queryset().filter(invoice_id=invoice_id)
-        else:
-            return super().get_queryset().none()
-
-
 @login_required
 def add_to_cart(request, pk):
     cart = ShoppingCart.objects.get(user_id=request.user.pk)
     form = BookNumberForm(request.POST)
     if form.is_valid():
-        BookInCart(cart_id=cart.pk, book_id=pk, number=form.cleaned_data["number"]).save()
+        BookInCart.objects.create(cart_id=cart.pk, book_id=pk, number=form.cleaned_data["number"])
     else:
         return HttpResponse("Error when adding book to cart.")
     return HttpResponseRedirect(reverse("book_detail", args=[pk]))
@@ -116,22 +110,6 @@ def remove_from_cart(request, pk):
     cart = ShoppingCart.objects.get(user_id=request.user.pk)
     BookInCart.objects.get(cart_id=cart.pk, book_id=pk).delete()
     return HttpResponseRedirect(reverse("shopping_cart"))
-
-
-@login_required
-def review_book(request, pk):
-    form = ReviewForm(request.POST)
-    if form.is_valid():
-        Review.objects.create(
-            user_id=request.user.pk,
-            book_id=pk,
-            rating=form.cleaned_data["rating"],
-            comment=form.cleaned_data["comment"],
-            date=timezone.now(),
-        )
-    else:
-        return HttpResponse("Error when trying to review this book.")
-    return HttpResponseRedirect(reverse("book_detail", args=[pk]))
 
 
 @method_decorator(login_required, name="dispatch")
@@ -181,3 +159,25 @@ def create_invoice(request):
 
 def checkout_complete(request):
     return render(request, "book/checkout_complete.html")
+
+
+@method_decorator(login_required, name="dispatch")
+class InvoiceView(ListView):
+    model = Invoice
+    ordering = ["-date"]
+
+    def get_queryset(self):
+        return super().get_queryset().filter(user_id=self.request.user.pk)
+
+
+@method_decorator(login_required, name="dispatch")
+class PurchasedBookView(ListView):
+    model = PurchasedBook
+
+    def get_queryset(self):
+        invoice_id = self.kwargs["pk"]
+        invoice = Invoice.objects.get(pk=invoice_id)
+        if invoice.user_id == self.request.user.pk:
+            return super().get_queryset().filter(invoice_id=invoice_id)
+        else:
+            return super().get_queryset().none()
