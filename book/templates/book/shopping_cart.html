@@ -27,7 +27,10 @@
                     </tr>
                 {% endfor %}
             </table>
-            <strong>Total price: {{ total_price }}$</strong>
+            <div class="text-end">
+                <strong class="mx-3">Total price: {{ total_price }}$</strong>
+                <a href="{% url 'checkout_page' %}" class="btn btn-primary">Checkout</a>
+            </div>
         {% else %}
             <h1 class="text-center">Your shopping cart is empty.</h1>
         {% endif %}

@@ -6,6 +6,7 @@
         {% if user.is_authenticated %}
             <div class="text-end mb-3">
                 <a href="{% url 'shopping_cart' %}" class="btn btn-outline-secondary">Shopping Cart</a>
+                <a href="{% url 'invoice_list' %}" class="btn btn-outline-info">Purchase History</a>
             </div>
         {% endif %}
         <form method="get"

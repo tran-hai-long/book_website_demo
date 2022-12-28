@@ -78,6 +78,15 @@ class ShoppingCartView(ListView):
         return context
 
 
+@method_decorator(login_required, name="dispatch")
+class InvoiceView(ListView):
+    model = Invoice
+    ordering = ["-date"]
+
+    def get_queryset(self):
+        return super().get_queryset().filter(user_id=self.request.user.pk)
+
+
 @login_required
 def add_to_cart(request, pk):
     cart = ShoppingCart.objects.get(user_id=request.user.pk)
