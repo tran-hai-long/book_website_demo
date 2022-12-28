@@ -9,5 +9,5 @@ urlpatterns = [
     path("add-to-cart/<int:pk>", views.add_to_cart, name="add_book_to_cart"),
     path("remove-from-cart/<int:pk>", views.remove_from_cart, name="remove_from_cart"),
     path("shopping-cart/", views.ShoppingCartView.as_view(), name="shopping_cart"),
-    path("book/review/<int:pk>", views.review_book, name="rate_book"),
+    path("book/review/<int:pk>", views.review_book, name="review_book"),
 ]
