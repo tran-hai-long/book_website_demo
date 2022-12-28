@@ -33,7 +33,7 @@
                 {% endif %}
             </section>
         </section>
-        <div class="container row">
+        <div class="container row mb-3">
             {% if user.is_authenticated %}
                 <form method="post" action="{% url 'review_book' book.pk %}">
                     {% csrf_token %}
@@ -44,14 +44,18 @@
         </div>
         <section class="container row">
             <h2>Reviews</h2>
-            {% for review in reviews %}
-                <article class="card col-md-4">
-                    <div class="card-body">
-                        <strong>User {{ review.user.username }} rated {{ review.rating }}-star in {{ review.date }}</strong>
-                        {% if review.comment %}<p>Comment: {{ review.comment }}</p>{% endif %}
-                    </div>
-                </article>
-            {% endfor %}
+            {% if not reviews %}
+                <h3>This book has not received any review yet.</h3>
+            {% else %}
+                {% for review in reviews %}
+                    <article class="card col-md-4">
+                        <div class="card-body">
+                            <strong>User {{ review.user.username }} rated {{ review.rating }}-star in {{ review.date }}</strong>
+                            {% if review.comment %}<p>Comment: {{ review.comment }}</p>{% endif %}
+                        </div>
+                    </article>
+                {% endfor %}
+            {% endif %}
         </section>
     </main>
 {% endblock %}
