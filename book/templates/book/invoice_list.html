@@ -1,0 +1,29 @@
+{% extends "generic.html" %}
+{% block title %}<title>Purchase History</title>{% endblock %}
+{% block main %}
+    <main class="container-fluid px-3 px-md-5">
+        {% if object_list %}
+            <h1 class="text-center mb-3">Invoices</h1>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Total amount</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                {% for invoice in object_list %}
+                    <tr>
+                        <td>{{ invoice.date }}</td>
+                        <td>{{ invoice.total_price }}</td>
+                        <td>
+                            <a href="{% url 'purchased_book_list' invoice.pk %}">View</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <h1 class="text-center">You have not performed any transaction yet.</h1>
+        {% endif %}
+    </main>
+{% endblock %}

@@ -29,7 +29,6 @@ class Book(models.Model):
     category = models.CharField(max_length=99, choices=CATEGORY_CHOICES)
     cover = models.ImageField(upload_to="book/%Y/%m/%d/%H%M%S/", null=True, blank=True)
     price = models.FloatField(default=0.0, validators=[MinValueValidator(0.0)])
-    discount = models.SmallIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(100)])
 
     def __str__(self):
         return f"{self.title} + by + {self.author}"
@@ -60,3 +59,25 @@ class Review(models.Model):
 
     def __str__(self):
         return f"User {self.user.username} rated {self.rating}-star for book {self.book.pk} - {self.book.title}"
+
+
+class Invoice(models.Model):
+    PAYMENT_METHODS = [("cod", "Cash-on-delivery")]
+    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    shipping_address = models.CharField(max_length=999)
+    phone_number = models.CharField(max_length=99)
+    date = models.DateField(default=timezone.now)
+    payment_method = models.CharField(max_length=99, choices=PAYMENT_METHODS)
+    total_price = models.FloatField(default=0)
+
+    def __str__(self):
+        return f"User {self.user.username} spent {self.total_price} in {self.date}"
+
+
+class PurchasedBook(models.Model):
+    invoice = models.ForeignKey(Invoice, null=True, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL)
+    number = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
+
+    def __str__(self):
+        return f"{self.number} copies of book {self.book.title} in invoice {self.invoice.pk}"

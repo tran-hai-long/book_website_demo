@@ -7,6 +7,7 @@
             {% if user.is_authenticated %}
                 <div class="text-end mb-3">
                     <a href="{% url 'shopping_cart' %}" class="btn btn-outline-secondary">Shopping Cart</a>
+                    <a href="{% url 'invoice_list' %}" class="btn btn-outline-info">Purchase History</a>
                 </div>
             {% endif %}
             <section class="col-md-6">
@@ -22,15 +23,18 @@
      alt="Cover for {{ book.title }}"
      class="h-50"/>{% endif %}
                 <h2 class="my-3">{{ book.price }}$</h2>
-                <button class="btn btn-primary mb-3">Buy</button>
                 {% if check_book_in_cart %}
                     <p id="already-in-cart">Book already in cart.</p>
                 {% else %}
-                    <form method="post" action="{% url 'add_book_to_cart' book.pk %}">
-                        {% csrf_token %}
-                        {{ book_number_form }}
-                        <button class="btn btn-outline-primary mb-3" id="add-to-cart">Add to shopping cart</button>
-                    </form>
+                    <div class="container text-center">
+                        <form method="post"
+                              action="{% url 'add_book_to_cart' book.pk %}"
+                              class="row">
+                            {% csrf_token %}
+                            <div class="col-6 mb-3">{{ book_number_form }}</div>
+                            <button class="btn btn-outline-primary mb-3 col-auto" id="add-to-cart">Add to shopping cart</button>
+                        </form>
+                    </div>
                 {% endif %}
             </section>
         </section>

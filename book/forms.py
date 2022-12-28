@@ -1,6 +1,6 @@
-from django.forms import Form, CharField, TextInput, ModelForm, NumberInput, Textarea, IntegerField
+from django.forms import Form, CharField, TextInput, ModelForm, NumberInput, Textarea, IntegerField, Select
 
-from book.models import Review
+from book.models import Review, Invoice
 
 
 class BookSearchForm(Form):
@@ -24,3 +24,14 @@ class ReviewForm(ModelForm):
         super(ReviewForm, self).__init__(*args, **kwargs)
         self.fields["rating"].widget.attrs["min"] = 1
         self.fields["rating"].widget.attrs["max"] = 5
+
+
+class CheckoutForm(ModelForm):
+    class Meta:
+        model = Invoice
+        fields = ("shipping_address", "phone_number", "payment_method")
+        widgets = {
+            "shipping_address": TextInput(attrs={"class": "form-control mb-3"}),
+            "phone_number": TextInput(attrs={"class": "form-control mb-3"}),
+            "payment_method": Select(attrs={"class": "form-select mb-3"}),
+        }

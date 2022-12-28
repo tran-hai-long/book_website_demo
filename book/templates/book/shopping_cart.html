@@ -1,7 +1,7 @@
 {% extends "generic.html" %}
 {% block title %}<title>Shopping Cart</title>{% endblock %}
 {% block main %}
-    <main class="container-fluid">
+    <main class="container-fluid px-3 px-md-5">
         {% if object_list %}
             <h1 class="text-center mb-3">Shopping Cart</h1>
             <table class="table table-striped table-hover">
@@ -27,7 +27,10 @@
                     </tr>
                 {% endfor %}
             </table>
-            <strong>Total price: {{ total_price }}$</strong>
+            <div class="text-end">
+                <strong class="mx-3">Total price: {{ total_price }}$</strong>
+                <a href="{% url 'checkout_page' %}" class="btn btn-primary">Checkout</a>
+            </div>
         {% else %}
             <h1 class="text-center">Your shopping cart is empty.</h1>
         {% endif %}
