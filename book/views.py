@@ -89,7 +89,7 @@ def review_book(request, pk):
             book_id=pk,
             rating=form.cleaned_data["rating"],
             comment=form.cleaned_data["comment"],
-            date=timezone.now,
+            date=timezone.now(),
         )
     else:
         return HttpResponse("Error when trying to review this book.")
