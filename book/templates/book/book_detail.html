@@ -42,12 +42,14 @@
                 </form>
             {% endif %}
         </div>
-        <section>
+        <section class="container row">
             <h2>Reviews</h2>
             {% for review in reviews %}
-                <article>
-                    <p>User {{ review.user.username }} rated {{ review.rating }}-star</p>
-                    {% if review.comment %}<p>Comment: {{ review.comment }}</p>{% endif %}
+                <article class="card col-md-4">
+                    <div class="card-body">
+                        <strong>User {{ review.user.username }} rated {{ review.rating }}-star</strong>
+                        {% if review.comment %}<p>Comment: {{ review.comment }}</p>{% endif %}
+                    </div>
                 </article>
             {% endfor %}
         </section>
