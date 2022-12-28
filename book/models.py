@@ -45,6 +45,7 @@ class ShoppingCart(models.Model):
 class BookInCart(models.Model):
     cart = models.ForeignKey(ShoppingCart, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    number = models.PositiveSmallIntegerField(default=1, validators=[MinValueValidator(1)])
 
     def __str__(self):
         return f"book {self.book} in cart {self.cart}."
