@@ -1,6 +1,7 @@
+from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
-from django.contrib.auth.models import User
+from django.utils import timezone
 
 
 # Create your models here.
@@ -47,3 +48,14 @@ class BookInCart(models.Model):
 
     def __str__(self):
         return f"book {self.book} in cart {self.cart}."
+
+
+class Review(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    rating = models.PositiveSmallIntegerField(default=3, validators=[MinValueValidator(1), MaxValueValidator(5)])
+    comment = models.TextField(null=True, blank=True)
+    date = models.DateField(default=timezone.now)
+
+    def __str__(self):
+        return f"User {self.user.username} rated {self.rating}-star for book {self.book.pk} - {self.book.title}"

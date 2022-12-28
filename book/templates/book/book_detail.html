@@ -23,7 +23,7 @@
      class="h-50"/>{% endif %}
                 <h2 class="my-3">{{ book.price }}$</h2>
                 <button class="btn btn-primary mb-3">Buy</button>
-                {% if books_in_cart %}
+                {% if check_book_in_cart %}
                     <p id="already-in-cart">Book already in cart.</p>
                 {% else %}
                     <form method="post" action="{% url 'add_book_to_cart' book.pk %}">
@@ -32,6 +32,31 @@
                     </form>
                 {% endif %}
             </section>
+        </section>
+        <div class="container row mb-3">
+            {% if user.is_authenticated and not this_user_review %}
+                <form method="post" action="{% url 'review_book' book.pk %}">
+                    {% csrf_token %}
+                    <div class="col-md-6 col-lg-4">{{ review_form }}</div>
+                    <button class="btn btn-outline-primary col-auto">Review</button>
+                </form>
+            {% endif %}
+        </div>
+        <section class="container row">
+            <h2>Reviews</h2>
+            {% if not reviews %}
+                <h3>This book has not received any review yet.</h3>
+            {% else %}
+                <h3>Average rating: {{ average_rating }}</h3>
+                {% for review in reviews %}
+                    <article class="card col-md-4">
+                        <div class="card-body">
+                            <strong>User {{ review.user.username }} rated {{ review.rating }}-star in {{ review.date }}</strong>
+                            {% if review.comment %}<p>Comment: {{ review.comment }}</p>{% endif %}
+                        </div>
+                    </article>
+                {% endfor %}
+            {% endif %}
         </section>
     </main>
 {% endblock %}
