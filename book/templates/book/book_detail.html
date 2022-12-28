@@ -33,10 +33,10 @@
                 {% endif %}
             </section>
             {% if user.is_authenticated %}
-                <form method="post" action="{% url 'rate_book' book.pk %}">
+                <form method="post" action="{% url 'review_book' book.pk %}">
                     {% csrf_token %}
-                    {{ rating_form.as_div }}
-                    <button class="btn btn-outline-primary">Rate this book</button>
+                    {{ review_form.as_div }}
+                    <button class="btn btn-outline-primary">Review</button>
                 </form>
             {% endif %}
         </section>

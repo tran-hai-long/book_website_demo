@@ -49,11 +49,11 @@ class BookInCart(models.Model):
         return f"book {self.book} in cart {self.cart}."
 
 
-class Rating(models.Model):
+class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    star = models.PositiveSmallIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(5)])
+    rating = models.PositiveSmallIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(5)])
     comment = models.TextField(null=True, blank=True)
 
     def __str__(self):
-        return f"User {self.user.username} rated {self.star}-star for book {self.book.pk} - {self.book.title}"
+        return f"User {self.user.username} rated {self.rating}-star for book {self.book.pk} - {self.book.title}"

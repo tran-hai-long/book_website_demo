@@ -4,8 +4,8 @@ from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, DetailView
 
-from book.forms import BookSearchForm, RatingForm
-from book.models import Book, ShoppingCart, BookInCart, Rating
+from book.forms import BookSearchForm, ReviewForm
+from book.models import Book, ShoppingCart, BookInCart, Review
 
 
 class BookListView(ListView):
@@ -29,7 +29,7 @@ class BookDetailView(DetailView):
             context["books_in_cart"] = BookInCart.objects.filter(
                 cart_id=ShoppingCart.objects.get(user_id=self.request.user.pk), book_id=self.object.pk
             )
-        context["rating_form"] = RatingForm()
+        context["review_form"] = ReviewForm()
         return context
 
 
@@ -74,12 +74,15 @@ def remove_from_cart(request, pk):
     return HttpResponseRedirect(reverse("shopping_cart"))
 
 
-def rate_book(request, pk):
-    form = RatingForm(request.POST)
+def review_book(request, pk):
+    form = ReviewForm(request.POST)
     if form.is_valid():
-        Rating.objects.create(
-            user_id=request.user.pk, book_id=pk, star=form.cleaned_data["star"], comment=form.cleaned_data["comment"]
+        Review.objects.create(
+            user_id=request.user.pk,
+            book_id=pk,
+            rating=form.cleaned_data["rating"],
+            comment=form.cleaned_data["comment"],
         )
     else:
-        return HttpResponse("Error when rating this book.")
+        return HttpResponse("Error when trying to review this book.")
     return HttpResponseRedirect(reverse("book_detail", args=[pk]))
