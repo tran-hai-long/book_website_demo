@@ -47,7 +47,7 @@
             {% for review in reviews %}
                 <article class="card col-md-4">
                     <div class="card-body">
-                        <strong>User {{ review.user.username }} rated {{ review.rating }}-star</strong>
+                        <strong>User {{ review.user.username }} rated {{ review.rating }}-star in {{ review.date }}</strong>
                         {% if review.comment %}<p>Comment: {{ review.comment }}</p>{% endif %}
                     </div>
                 </article>

@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, DetailView
 
@@ -83,6 +84,7 @@ def review_book(request, pk):
             book_id=pk,
             rating=form.cleaned_data["rating"],
             comment=form.cleaned_data["comment"],
+            date=timezone.now,
         )
     else:
         return HttpResponse("Error when trying to review this book.")
