@@ -15,9 +15,9 @@
                 {% for invoice in object_list %}
                     <tr>
                         <td>{{ invoice.date }}</td>
-                        <td>{{ invoice.total_price }}</td>
+                        <td>{{ invoice.total_price }}$</td>
                         <td>
-                            <a href="{% url 'purchased_book_list' invoice.pk %}">View</a>
+                            <a href="{% url 'purchased_book_list' invoice.pk %}" class="btn btn-info">View</a>
                         </td>
                     </tr>
                 {% endfor %}
