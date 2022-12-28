@@ -23,7 +23,7 @@
      class="h-50"/>{% endif %}
                 <h2 class="my-3">{{ book.price }}$</h2>
                 <button class="btn btn-primary mb-3">Buy</button>
-                {% if books_in_cart %}
+                {% if check_book_in_cart %}
                     <p id="already-in-cart">Book already in cart.</p>
                 {% else %}
                     <form method="post" action="{% url 'add_book_to_cart' book.pk %}">
@@ -34,7 +34,7 @@
             </section>
         </section>
         <div class="container row mb-3">
-            {% if user.is_authenticated %}
+            {% if user.is_authenticated and not this_user_review %}
                 <form method="post" action="{% url 'review_book' book.pk %}">
                     {% csrf_token %}
                     <div class="col-md-6 col-lg-4">{{ review_form }}</div>

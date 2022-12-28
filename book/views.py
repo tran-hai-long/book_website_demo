@@ -28,12 +28,14 @@ class BookDetailView(DetailView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(BookDetailView, self).get_context_data(**kwargs)
         if self.request.user.is_authenticated:
-            context["books_in_cart"] = BookInCart.objects.filter(
+            context["check_book_in_cart"] = BookInCart.objects.filter(
                 cart_id=ShoppingCart.objects.get(user_id=self.request.user.pk), book_id=self.object.pk
             )
         context["review_form"] = ReviewForm()
         reviews = Review.objects.filter(book_id=self.object.pk).order_by("date")
         context["reviews"] = reviews
+        this_user_review = reviews.filter(user_id=self.request.user.pk)
+        context["this_user_review"] = this_user_review
         context["average_rating"] = reviews.aggregate(Avg("rating")).get("rating__avg")
         return context
 
