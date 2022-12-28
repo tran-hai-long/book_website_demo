@@ -81,6 +81,7 @@ def remove_from_cart(request, pk):
     return HttpResponseRedirect(reverse("shopping_cart"))
 
 
+@login_required
 def review_book(request, pk):
     form = ReviewForm(request.POST)
     if form.is_valid():
