@@ -87,6 +87,19 @@ class InvoiceView(ListView):
         return super().get_queryset().filter(user_id=self.request.user.pk)
 
 
+@method_decorator(login_required, name="dispatch")
+class PurchasedBookView(ListView):
+    model = PurchasedBook
+
+    def get_queryset(self):
+        invoice_id = self.kwargs["pk"]
+        invoice = Invoice.objects.get(pk=invoice_id)
+        if invoice.user_id == self.request.user.pk:
+            return super().get_queryset().filter(invoice_id=invoice_id)
+        else:
+            return HttpResponse("You do not have permission to view this page.")
+
+
 @login_required
 def add_to_cart(request, pk):
     cart = ShoppingCart.objects.get(user_id=request.user.pk)

@@ -16,7 +16,9 @@
                     <tr>
                         <td>{{ invoice.date }}</td>
                         <td>{{ invoice.total_price }}</td>
-                        <td>View</td>
+                        <td>
+                            <a href="{% url 'purchased_book_list' invoice.pk %}">View</a>
+                        </td>
                     </tr>
                 {% endfor %}
             </table>

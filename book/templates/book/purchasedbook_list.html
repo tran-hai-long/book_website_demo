@@ -1,0 +1,25 @@
+{% extends "generic.html" %}
+{% block title %}<title>Purchased Books</title>{% endblock %}
+{% block main %}
+    <main class="container-fluid">
+        <h1 class="text-center mb-3">Purchased books in this invoice</h1>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Book</th>
+                    <th>Number</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            {% for purchased_book in object_list %}
+                <tr>
+                    <td>{{ purchased_book.book.title }}</td>
+                    <td>{{ purchased_book.number }}</td>
+                    <td>
+                        <a href="{% url 'book_detail' purchased_book.book.pk %}">View</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </main>
+{% endblock %}
