@@ -29,7 +29,6 @@ class Book(models.Model):
     category = models.CharField(max_length=99, choices=CATEGORY_CHOICES)
     cover = models.ImageField(upload_to="book/%Y/%m/%d/%H%M%S/", null=True, blank=True)
     price = models.FloatField(default=0.0, validators=[MinValueValidator(0.0)])
-    discount = models.SmallIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(100)])
 
     def __str__(self):
         return f"{self.title} + by + {self.author}"
