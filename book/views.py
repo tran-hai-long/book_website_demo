@@ -31,7 +31,7 @@ class BookDetailView(DetailView):
                 cart_id=ShoppingCart.objects.get(user_id=self.request.user.pk), book_id=self.object.pk
             )
         context["review_form"] = ReviewForm()
-        context["reviews"] = Review.objects.filter(book_id=self.object.pk)
+        context["reviews"] = Review.objects.filter(book_id=self.object.pk).order_by("date")
         return context
 
 
@@ -57,6 +57,7 @@ class BookSearchView(ListView):
 class ShoppingCartView(ListView):
     model = BookInCart
     template_name = "book/shopping_cart.html"
+    ordering = ["book.title"]
 
     def get_queryset(self):
         return super().get_queryset().filter(cart_id=ShoppingCart.objects.get(user_id=self.request.user.pk))
