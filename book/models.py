@@ -60,3 +60,19 @@ class Review(models.Model):
 
     def __str__(self):
         return f"User {self.user.username} rated {self.rating}-star for book {self.book.pk} - {self.book.title}"
+
+
+class Invoice(models.Model):
+    PAYMENT_METHODS = [("cod", "Cash-on-delivery")]
+    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    shipping_address = models.CharField(max_length=999)
+    phone_number = models.CharField(max_length=99)
+    date = models.DateField(default=timezone.now)
+    payment_method = models.CharField(max_length=99, choices=PAYMENT_METHODS)
+
+
+class PurchasedBook(models.Model):
+    invoice = models.ForeignKey(Invoice, null=True, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL)
+    number = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
+    total_price = models.FloatField()
