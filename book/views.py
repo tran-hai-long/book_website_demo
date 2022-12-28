@@ -97,7 +97,7 @@ class PurchasedBookView(ListView):
         if invoice.user_id == self.request.user.pk:
             return super().get_queryset().filter(invoice_id=invoice_id)
         else:
-            return HttpResponse("You do not have permission to view this page.")
+            return super().get_queryset().none()
 
 
 @login_required
