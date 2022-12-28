@@ -30,6 +30,7 @@ class BookDetailView(DetailView):
                 cart_id=ShoppingCart.objects.get(user_id=self.request.user.pk), book_id=self.object.pk
             )
         context["review_form"] = ReviewForm()
+        context["reviews"] = Review.objects.filter(book_id=self.object.pk)
         return context
 
 

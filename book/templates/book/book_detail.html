@@ -32,6 +32,8 @@
                     </form>
                 {% endif %}
             </section>
+        </section>
+        <div>
             {% if user.is_authenticated %}
                 <form method="post" action="{% url 'review_book' book.pk %}">
                     {% csrf_token %}
@@ -39,6 +41,15 @@
                     <button class="btn btn-outline-primary">Review</button>
                 </form>
             {% endif %}
+        </div>
+        <section>
+            <h2>Reviews</h2>
+            {% for review in reviews %}
+                <article>
+                    <p>User {{ review.user.username }} rated {{ review.rating }}-star</p>
+                    {% if review.comment %}<p>Comment: {{ review.comment }}</p>{% endif %}
+                </article>
+            {% endfor %}
         </section>
     </main>
 {% endblock %}
