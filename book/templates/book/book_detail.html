@@ -19,9 +19,9 @@
                 <p>Description: {{ book.book_description }}</p>
             </section>
             <section class="col-md-6 text-center">
-                {% if book.cover %}<img src="{{ book.cover.url }}"
-     alt="Cover for {{ book.title }}"
-     class="h-50"/>{% endif %}
+                {% if book.cover %}
+                    <img src="{{ book.cover.url }}" alt="Cover for {{ book.title }}" height="400"/>
+                {% endif %}
                 <h2 class="my-3">{{ book.price }}$</h2>
                 {% if check_book_in_cart %}
                     <p id="already-in-cart">Book already in cart.</p>
