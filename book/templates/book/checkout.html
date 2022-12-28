@@ -1,0 +1,24 @@
+{% extends "generic.html" %}
+{% block title %}<title>Checkout</title>{% endblock %}
+{% block main %}
+    <main>
+        {% if object_list %}
+            <p>List of books:</p>
+            <ul>
+                {% for book_in_cart in object_list %}
+                    <li>{{ book_in_cart.number }} copies of {{ book_in_cart.book.title }}</li>
+                {% endfor %}
+            </ul>
+            <strong>Total price: {{ total_price }}$</strong>
+            <div>
+                <form method="post" action="{% url 'create_invoice' %}">
+                    {% csrf_token %}
+                    {{ form }}
+                    <button class="btn btn-primary">Purchase</button>
+                </form>
+            </div>
+        {% else %}
+            <h1>Empty</h1>
+        {% endif %}
+    </main>
+{% endblock %}

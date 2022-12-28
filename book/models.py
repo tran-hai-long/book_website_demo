@@ -69,10 +69,16 @@ class Invoice(models.Model):
     phone_number = models.CharField(max_length=99)
     date = models.DateField(default=timezone.now)
     payment_method = models.CharField(max_length=99, choices=PAYMENT_METHODS)
+    total_price = models.FloatField(default=0)
+
+    def __str__(self):
+        return f"User {self.user.username} spent {self.total_price} in {self.date}"
 
 
 class PurchasedBook(models.Model):
     invoice = models.ForeignKey(Invoice, null=True, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL)
     number = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
-    total_price = models.FloatField()
+
+    def __str__(self):
+        return f"{self.number} copies of book {self.book.title} in invoice {self.invoice.pk}"
