@@ -180,4 +180,4 @@ def create_invoice(request):
 
 
 def checkout_complete(request):
-    return render(request, "book/checkout-complete.html")
+    return render(request, "book/checkout_complete.html")
