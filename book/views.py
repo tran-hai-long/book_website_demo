@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.db.models import Avg
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.utils import timezone
@@ -31,7 +32,9 @@ class BookDetailView(DetailView):
                 cart_id=ShoppingCart.objects.get(user_id=self.request.user.pk), book_id=self.object.pk
             )
         context["review_form"] = ReviewForm()
-        context["reviews"] = Review.objects.filter(book_id=self.object.pk).order_by("date")
+        reviews = Review.objects.filter(book_id=self.object.pk).order_by("date")
+        context["reviews"] = reviews
+        context["average_rating"] = reviews.aggregate(Avg("rating")).get("rating__avg")
         return context
 
 

@@ -47,6 +47,7 @@
             {% if not reviews %}
                 <h3>This book has not received any review yet.</h3>
             {% else %}
+                <h3>Average rating: {{ average_rating }}</h3>
                 {% for review in reviews %}
                     <article class="card col-md-4">
                         <div class="card-body">
