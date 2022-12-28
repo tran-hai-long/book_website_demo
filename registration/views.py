@@ -13,11 +13,15 @@ from registration.forms import RegistrationForm
 def registration_page(request):
     if request.method == "POST":
         form = RegistrationForm(request.POST)
-        if form.is_valid():
+        username = form.data["username"]
+        if User.objects.get(username=username):
+            context = {"form": RegistrationForm(), "error": "This username is already taken."}
+            return render(request, "registration/registration.html", context)
+        elif form.is_valid():
             try:
                 validate_password(form.cleaned_data["password"])
             except ValidationError as e:
-                context = {"form": RegistrationForm(), "password_error": str(e)}
+                context = {"form": RegistrationForm(), "error": str(e)}
                 return render(request, "registration/registration.html", context)
             user = User.objects.create_user(
                 form.cleaned_data["username"],
