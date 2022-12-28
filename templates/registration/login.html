@@ -5,7 +5,7 @@
     </header>
 {% endblock %}
 {% block main %}
-    <main class="container text-center">
+    <main class="container text-center px-3 px-md-5">
         <form method="post" action="{% url 'login' %}">
             {% csrf_token %}
             {{ form.as_div }}
