@@ -67,6 +67,15 @@ class ShoppingCartView(ListView):
     def get_queryset(self):
         return super().get_queryset().filter(cart_id=ShoppingCart.objects.get(user_id=self.request.user.pk))
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(ShoppingCartView, self).get_context_data(**kwargs)
+        books_in_cart = BookInCart.objects.filter(cart_id=ShoppingCart.objects.get(user_id=self.request.user.pk))
+        total_price = 0
+        for book_in_cart in books_in_cart:
+            total_price += book_in_cart.book.price * book_in_cart.number
+        context["total_price"] = total_price
+        return context
+
 
 @login_required
 def add_to_cart(request, pk):
