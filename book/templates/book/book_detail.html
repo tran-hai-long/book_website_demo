@@ -28,6 +28,7 @@
                 {% else %}
                     <form method="post" action="{% url 'add_book_to_cart' book.pk %}">
                         {% csrf_token %}
+                        {{ book_number_form }}
                         <button class="btn btn-outline-primary mb-3" id="add-to-cart">Add to shopping cart</button>
                     </form>
                 {% endif %}

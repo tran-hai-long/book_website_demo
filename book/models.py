@@ -48,7 +48,7 @@ class BookInCart(models.Model):
     number = models.PositiveSmallIntegerField(default=1, validators=[MinValueValidator(1)])
 
     def __str__(self):
-        return f"book {self.book} in cart {self.cart}."
+        return f"{self.number} copies of book {self.book} in cart {self.cart}."
 
 
 class Review(models.Model):

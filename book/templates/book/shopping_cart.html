@@ -10,6 +10,7 @@
                         <th>Title</th>
                         <th>Author</th>
                         <th>Price</th>
+                        <th>Number of copies</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -18,6 +19,7 @@
                         <td>{{ book_in_cart.book.title }}</td>
                         <td>{{ book_in_cart.book.author }}</td>
                         <td>{{ book_in_cart.book.price }}</td>
+                        <td>{{ book_in_cart.number }}</td>
                         <td>
                             <a href="{% url 'remove_from_cart' book_in_cart.book.pk %}"
                                class="btn btn-outline-danger">Remove</a>

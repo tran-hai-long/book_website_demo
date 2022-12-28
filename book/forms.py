@@ -1,10 +1,14 @@
-from django.forms import Form, CharField, TextInput, ModelForm, NumberInput, Textarea
+from django.forms import Form, CharField, TextInput, ModelForm, NumberInput, Textarea, IntegerField
 
 from book.models import Review
 
 
 class BookSearchForm(Form):
     title = CharField(max_length=99, widget=TextInput(attrs={"class": "form-control"}), label="")
+
+
+class BookNumberForm(Form):
+    number = IntegerField(min_value=1, max_value=9999, widget=NumberInput(attrs={"class": "form-control", "value": 1}))
 
 
 class ReviewForm(ModelForm):

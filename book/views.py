@@ -6,7 +6,7 @@ from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, DetailView
 
-from book.forms import BookSearchForm, ReviewForm
+from book.forms import BookSearchForm, ReviewForm, BookNumberForm
 from book.models import Book, ShoppingCart, BookInCart, Review
 
 
@@ -31,6 +31,7 @@ class BookDetailView(DetailView):
             context["check_book_in_cart"] = BookInCart.objects.filter(
                 cart_id=ShoppingCart.objects.get(user_id=self.request.user.pk), book_id=self.object.pk
             )
+        context["book_number_form"] = BookNumberForm()
         context["review_form"] = ReviewForm()
         reviews = Review.objects.filter(book_id=self.object.pk).order_by("date")
         context["reviews"] = reviews
@@ -70,7 +71,11 @@ class ShoppingCartView(ListView):
 @login_required
 def add_to_cart(request, pk):
     cart = ShoppingCart.objects.get(user_id=request.user.pk)
-    BookInCart(cart_id=cart.pk, book_id=pk).save()
+    form = BookNumberForm(request.POST)
+    if form.is_valid():
+        BookInCart(cart_id=cart.pk, book_id=pk, number=form.cleaned_data["number"]).save()
+    else:
+        return HttpResponse("Error when adding book to cart.")
     return HttpResponseRedirect(reverse("book_detail", args=[pk]))
 
 
