@@ -37,8 +37,8 @@ class Book(models.Model):
 class ShoppingCart(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return f"Shopping cart of user {self.user}"
+    # def __str__(self):
+    #     return f"Shopping cart of user {self.user}"
 
 
 class BookInCart(models.Model):
@@ -46,8 +46,8 @@ class BookInCart(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     number = models.PositiveSmallIntegerField(default=1, validators=[MinValueValidator(1)])
 
-    def __str__(self):
-        return f"{self.number} copies of book {self.book} in cart {self.cart}."
+    # def __str__(self):
+    #     return f"{self.number} copies of book {self.book} in cart {self.cart}."
 
 
 class Review(models.Model):
@@ -57,8 +57,8 @@ class Review(models.Model):
     comment = models.TextField(null=True, blank=True)
     date = models.DateField(default=timezone.now)
 
-    def __str__(self):
-        return f"User {self.user.username} rated {self.rating}-star for book {self.book.pk} - {self.book.title}"
+    # def __str__(self):
+    #     return f"User {self.user.username} rated {self.rating}-star for book {self.book.pk} - {self.book.title}"
 
 
 class Invoice(models.Model):
@@ -70,8 +70,8 @@ class Invoice(models.Model):
     payment_method = models.CharField(max_length=99, choices=PAYMENT_METHODS)
     total_price = models.FloatField(default=0)
 
-    def __str__(self):
-        return f"User {self.user.username} spent {self.total_price} in {self.date}"
+    # def __str__(self):
+    #     return f"User {self.user.username} spent {self.total_price} in {self.date}"
 
 
 class PurchasedBook(models.Model):
@@ -79,5 +79,5 @@ class PurchasedBook(models.Model):
     book = models.ForeignKey(Book, null=True, on_delete=models.CASCADE)
     number = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
 
-    def __str__(self):
-        return f"{self.number} copies of book {self.book.title} in invoice {self.invoice.pk}"
+    # def __str__(self):
+    #     return f"{self.number} copies of book {self.book.title} in invoice {self.invoice.pk}"
