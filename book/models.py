@@ -76,7 +76,7 @@ class Invoice(models.Model):
 
 class PurchasedBook(models.Model):
     invoice = models.ForeignKey(Invoice, null=True, on_delete=models.CASCADE)
-    book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL)
+    book = models.ForeignKey(Book, null=True, on_delete=models.CASCADE)
     number = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
 
     def __str__(self):
