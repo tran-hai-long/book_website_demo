@@ -11,7 +11,7 @@
                 </div>
             {% endif %}
             <section class="col-md-6">
-                <h2>{{ book.title }}</h2>
+                <h2 class="mb-3">{{ book.title }}</h2>
                 <p>Author: {{ book.author }}</p>
                 <p>Category: {{ book.category }}</p>
                 <p>Release date: {{ book.release_date }}</p>
@@ -19,22 +19,22 @@
                 <p>Description: {{ book.book_description }}</p>
             </section>
             <section class="col-md-6 text-center">
-                {% if book.cover %}
-                    <img src="{{ book.cover.url }}" alt="Cover for {{ book.title }}" height="400"/>
-                {% endif %}
+                {% if book.cover %}<img src="{{ book.cover.url }}"
+     alt="Cover for {{ book.title }}"
+     height="400"/>{% endif %}
                 <h2 class="my-3">{{ book.price }}$</h2>
-                {% if check_book_in_cart %}
-                    <p id="already-in-cart">Book already in cart.</p>
-                {% else %}
-                    <div class="container text-center">
-                        <form method="post"
-                              action="{% url 'add_book_to_cart' book.pk %}"
-                              class="row">
-                            {% csrf_token %}
-                            <div class="col-6 mb-3">{{ book_number_form }}</div>
-                            <button class="btn btn-outline-primary mb-3 col-auto" id="add-to-cart">Add to shopping cart</button>
-                        </form>
-                    </div>
+                {% if user.is_authenticated %}
+                    {% if check_book_in_cart %}
+                        <p id="already-in-cart">Book already in cart.</p>
+                    {% else %}
+                        <div class="container text-center">
+                            <form method="post" action="{% url 'add_book_to_cart' book.pk %}" class="row">
+                                {% csrf_token %}
+                                <div class="col-6 mb-3">{{ book_number_form }}</div>
+                                <button class="btn btn-outline-primary mb-3 col-auto" id="add-to-cart">Add to shopping cart</button>
+                            </form>
+                        </div>
+                    {% endif %}
                 {% endif %}
             </section>
         </section>
