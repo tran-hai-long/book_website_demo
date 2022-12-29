@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
@@ -14,7 +14,12 @@ def registration_page(request):
     if request.method == "POST":
         form = RegistrationForm(request.POST)
         username = form.data["username"]
-        if User.objects.get(username=username):
+        username_not_taken = False
+        try:
+            User.objects.get(username=username)
+        except ObjectDoesNotExist:
+            username_not_taken = True
+        if not username_not_taken:
             context = {"form": RegistrationForm(), "error": "This username is already taken."}
             return render(request, "registration/registration.html", context)
         elif form.is_valid():
