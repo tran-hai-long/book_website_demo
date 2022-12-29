@@ -19,9 +19,11 @@
                 <p>Description: {{ book.book_description }}</p>
             </section>
             <section class="col-md-6 text-center">
-                {% if book.cover %}<img src="{{ book.cover.url }}"
-     alt="Cover for {{ book.title }}"
-     height="400"/>{% endif %}
+                {% if book.cover %}<img src="{{ book.cover.url }}" alt="Cover for {{ book.title }}" height="400"/>
+                {% else %}
+                    {% load static %}
+                    <img src="{% get_media_prefix  %}book/nocover.jpeg" alt="No cover available" height="400"/>
+                {% endif %}
                 <h2 class="my-3">{{ book.price }}$</h2>
                 {% if user.is_authenticated %}
                     {% if check_book_in_cart %}
