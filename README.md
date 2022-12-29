@@ -5,7 +5,7 @@ University assignment: Create a simple book selling website.
 ## Technologies
 
 - Django framework for back-end.
-- Bootstrap, Pure HTML and Javascript for front-end.
+- Bootstrap, Pure HTML ~~and Javascript~~ for front-end.
 - SQLite3 database (bundled with Django).
 
 ## License
