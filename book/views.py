@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg
+from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
@@ -38,7 +39,7 @@ class BookSearchView(ListView):
         form = BookSearchForm(self.request.GET)
         if form.is_valid():
             search_term = form.cleaned_data["title"]
-            return super().get_queryset().filter(title__icontains=search_term)
+            return super().get_queryset().filter(Q(title__icontains=search_term) | Q(author__icontains=search_term))
 
 
 class BookDetailView(DetailView):
