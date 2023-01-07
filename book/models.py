@@ -41,6 +41,7 @@ class ShoppingCart(models.Model):
         return f"Shopping cart of user {self.user}"
 
 
+# BookInCart represents an entry in ShoppingCart
 class BookInCart(models.Model):
     cart = models.ForeignKey(ShoppingCart, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
@@ -80,6 +81,7 @@ class Invoice(models.Model):
             return f"A deleted user spent {self.total_price} in {self.date}"
 
 
+# PurchasedBook represents an entry in Invoice
 class PurchasedBook(models.Model):
     invoice = models.ForeignKey(Invoice, null=True, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, null=True, on_delete=models.CASCADE)

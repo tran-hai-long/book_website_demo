@@ -20,6 +20,7 @@
                 <button class="btn btn-outline-primary col-auto">Search</button>
             </div>
         </form>
+        {# Display books in card layout #}
         {% if object_list %}
             <section class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 row-cols-xl-6 g-5 mx-5">
                 {% for book in object_list %}
@@ -39,6 +40,7 @@
                     </article>
                 {% endfor %}
             </section>
+            {# Pagination #}
             <nav class="pagination justify-content-end">
                 <ul class="pagination">
                     {% if page_obj.has_previous %}

@@ -42,6 +42,8 @@ class BookSearchView(ListView):
             return super().get_queryset().filter(Q(title__icontains=search_term) | Q(author__icontains=search_term))
 
 
+# Get the details for this book, get a list of all reviews for this book, display a form for the user to rate the
+# book, and get this user's review for this book if they had reviewed in the past
 class BookDetailView(DetailView):
     model = Book
 
@@ -77,6 +79,7 @@ def review_book(request, pk):
     return HttpResponseRedirect(reverse("book_detail", args=[pk]))
 
 
+# Get all books in user's shopping cart and calculate the total price
 @method_decorator(login_required, name="dispatch")
 class ShoppingCartView(ListView):
     model = BookInCart
@@ -113,6 +116,7 @@ def remove_from_cart(request, pk):
     return HttpResponseRedirect(reverse("shopping_cart"))
 
 
+# Display a form for the user to type in shipping address, and calculate total price of invoice
 @method_decorator(login_required, name="dispatch")
 class CheckoutView(ListView):
     model = BookInCart
@@ -132,6 +136,7 @@ class CheckoutView(ListView):
         return context
 
 
+# Take data received from CheckoutView to create an Invoice object
 @login_required
 def create_invoice(request):
     form = CheckoutForm(request.POST)

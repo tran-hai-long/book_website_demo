@@ -13,6 +13,7 @@ from registration.forms import RegistrationForm
 def registration_page(request):
     if request.method == "POST":
         form = RegistrationForm(request.POST)
+        # Check for duplicate username
         username = form.data["username"]
         username_not_taken = False
         try:
@@ -23,11 +24,13 @@ def registration_page(request):
             context = {"form": RegistrationForm(), "error": "This username is already taken."}
             return render(request, "registration/registration.html", context)
         elif form.is_valid():
+            # If password does not meets requirements, display the error message
             try:
                 validate_password(form.cleaned_data["password"])
             except ValidationError as e:
                 context = {"form": RegistrationForm(), "error": str(e)}
                 return render(request, "registration/registration.html", context)
+            # If input is valid, create a new user and their ShoppingCart object
             user = User.objects.create_user(
                 form.cleaned_data["username"],
                 form.cleaned_data["email"],
