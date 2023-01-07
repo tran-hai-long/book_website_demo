@@ -51,14 +51,17 @@ class BookInCart(models.Model):
 
 
 class Review(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     rating = models.PositiveSmallIntegerField(default=3, validators=[MinValueValidator(1), MaxValueValidator(5)])
     comment = models.TextField(null=True, blank=True)
     date = models.DateField(default=timezone.now)
 
-    # def __str__(self):
-    #     return f"User {self.user.username} rated {self.rating}-star for book {self.book.pk} - {self.book.title}"
+    def __str__(self):
+        if self.user:
+            return f"User {self.user.username} rated {self.rating}-star for book {self.book.pk} - {self.book.title}"
+        else:
+            return f"A deleted user rated {self.rating}-star for book {self.book.pk} - {self.book.title}"
 
 
 class Invoice(models.Model):
