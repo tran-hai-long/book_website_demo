@@ -142,6 +142,11 @@ class ShoppingCartModelTest(TestCase):
         shopping_cart = ShoppingCart.objects.get(user_id=1)
         self.assertEqual(shopping_cart.user.username, "testuser")
 
+    def test_user_label(self):
+        shopping_cart = ShoppingCart.objects.get(user_id=1)
+        user = shopping_cart._meta.get_field("user").verbose_name
+        self.assertEqual(user, "user")
+
     def test_cascade_on_user_deletion(self):
         user = User.objects.get(id=1)
         user.delete()
