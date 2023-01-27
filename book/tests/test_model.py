@@ -1,8 +1,9 @@
-from django.core.exceptions import ValidationError
+from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.test import TestCase
 from django.utils import timezone
 
-from book.models import Book
+from book.models import Book, ShoppingCart
 
 
 class BookModelTest(TestCase):
@@ -129,3 +130,24 @@ class BookModelTest(TestCase):
     def test_str_method(self):
         book = Book.objects.get(id=1)
         self.assertEqual(str(book), "Django for Beginner by Tran Hai Long")
+
+
+class ShoppingCartModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        user = User.objects.create_user(username="testuser", email="a@example.com", password="testPassw0rd")
+        ShoppingCart.objects.create(user_id=user.pk)
+
+    def test_shopping_cart_user_field(self):
+        shopping_cart = ShoppingCart.objects.get(user_id=1)
+        self.assertEqual(shopping_cart.user.username, "testuser")
+
+    def test_cascade_on_user_deletion(self):
+        user = User.objects.get(id=1)
+        user.delete()
+        with self.assertRaises(ObjectDoesNotExist):
+            ShoppingCart.objects.get(user_id=1)
+
+    def test_str_method(self):
+        shopping_cart = ShoppingCart.objects.get(user_id=1)
+        self.assertEqual(str(shopping_cart), "Shopping cart of user testuser")
