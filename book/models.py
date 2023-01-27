@@ -31,7 +31,7 @@ class Book(models.Model):
     price = models.FloatField(default=0.0, validators=[MinValueValidator(0.0)])
 
     def __str__(self):
-        return f"{self.title} + by + {self.author}"
+        return f"{self.title} by {self.author}"
 
 
 class ShoppingCart(models.Model):
