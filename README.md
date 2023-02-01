@@ -12,6 +12,7 @@ University assignment: Create a simple book selling website.
 
 - [ ] Write **a lot** of test cases.
 - [ ] Add some AJAX to the front-end.
+- [ ] Deploy it somewhere.
 
 ## License
 

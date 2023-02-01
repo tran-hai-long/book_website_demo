@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.test import TestCase
 from django.utils import timezone
 
-from book.models import Book, ShoppingCart
+from book.models import Book, ShoppingCart, BookInCart
 
 
 class BookModelTest(TestCase):
@@ -138,7 +138,7 @@ class ShoppingCartModelTest(TestCase):
         user = User.objects.create_user(username="testuser", email="a@example.com", password="testPassw0rd")
         ShoppingCart.objects.create(user_id=user.pk)
 
-    def test_shopping_cart_user_field(self):
+    def test_shopping_cart_user_reference(self):
         shopping_cart = ShoppingCart.objects.get(user_id=1)
         self.assertEqual(shopping_cart.user.username, "testuser")
 
@@ -156,3 +156,67 @@ class ShoppingCartModelTest(TestCase):
     def test_str_method(self):
         shopping_cart = ShoppingCart.objects.get(user_id=1)
         self.assertEqual(str(shopping_cart), "Shopping cart of user testuser")
+
+
+class BookInCartModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        book = Book.objects.create(
+            title="Django for Beginner",
+            author="Tran Hai Long",
+            book_description="Test book description.",
+            release_date=timezone.now(),
+            number_of_pages=999,
+            category="Art",
+            cover=None,
+            price=99.99,
+        )
+        user = User.objects.create_user(username="testuser", email="a@example.com", password="testPassw0rd")
+        cart = ShoppingCart.objects.create(user_id=user.pk)
+        BookInCart.objects.create(cart_id=cart.pk, book_id=book.pk, number=1)
+
+    def test_cart_label(self):
+        book_in_cart = BookInCart.objects.get(id=1)
+        cart = book_in_cart._meta.get_field("cart").verbose_name
+        self.assertEqual(cart, "cart")
+
+    def test_book_label(self):
+        book_in_cart = BookInCart.objects.get(id=1)
+        book = book_in_cart._meta.get_field("book").verbose_name
+        self.assertEqual(book, "book")
+
+    def test_number_label(self):
+        book_in_cart = BookInCart.objects.get(id=1)
+        number = book_in_cart._meta.get_field("number").verbose_name
+        self.assertEqual(number, "number")
+
+    def test_cart_reference(self):
+        book_in_cart = BookInCart.objects.get(id=1)
+        self.assertEqual(book_in_cart.cart.user.username, "testuser")
+
+    def test_book_reference(self):
+        book_in_cart = BookInCart.objects.get(id=1)
+        self.assertEqual(book_in_cart.book.title, "Django for Beginner")
+
+    def test_cart_cascade(self):
+        cart = ShoppingCart.objects.get(id=1)
+        cart.delete()
+        with self.assertRaises(ObjectDoesNotExist):
+            BookInCart.objects.get(id=1)
+
+    def test_book_cascade(self):
+        book = Book.objects.get(id=1)
+        book.delete()
+        with self.assertRaises(ObjectDoesNotExist):
+            BookInCart.objects.get(id=1)
+
+    def test_number_default(self):
+        book_in_cart = BookInCart.objects.get(id=1)
+        default_number = book_in_cart._meta.get_field("number").default
+        self.assertEqual(default_number, 1)
+
+    def test_number_validator(self):
+        book_in_cart = BookInCart.objects.get(id=1)
+        book_in_cart.number = 0
+        with self.assertRaises(ValidationError):
+            book_in_cart.clean_fields()
