@@ -2,6 +2,12 @@
 
 University assignment: Create a simple book selling website.
 
+## Features
+
+- Allows an administrator to create, update and delete books in the database.
+- Allows guests to view books currently available, and allows the creation of customer accounts.
+- Allows logged-in customers to buy books and view their purchase history.
+
 ## Technologies
 
 - Django framework for back-end.
