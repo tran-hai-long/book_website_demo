@@ -63,6 +63,8 @@ class BookModelTest(TestCase):
         blank_check = book._meta.get_field("book_description").blank
         self.assertEqual(null_check, True)
         self.assertEqual(blank_check, True)
+        book.book_description = None
+        book.clean_fields()
 
     def test_release_date_label(self):
         book = Book.objects.get(pk=1)
@@ -173,7 +175,7 @@ class BookInCartModelTest(TestCase):
         )
         user = User.objects.create_user(username="testuser", email="a@example.com", password="testPassw0rd")
         cart = ShoppingCart.objects.create(user_id=user.pk)
-        BookInCart.objects.create(cart_id=cart.pk, book_id=book.pk, number=1)
+        BookInCart.objects.create(cart_id=cart.pk, book_id=book.pk)
 
     def test_cart_label(self):
         book_in_cart = BookInCart.objects.get(pk=1)
@@ -220,3 +222,95 @@ class BookInCartModelTest(TestCase):
         book_in_cart.number = 0
         with self.assertRaises(ValidationError):
             book_in_cart.clean_fields()
+
+    def test_str_method(self):
+        book_in_cart = BookInCart.objects.get(pk=1)
+        self.assertEqual(str(book_in_cart), "1 copies of book 1 - Django for Beginner in cart testuser.")
+
+
+class ReviewModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        book = Book.objects.create(
+            title="Django for Beginner",
+            author="Tran Hai Long",
+            book_description="Test book description.",
+            release_date=timezone.now(),
+            number_of_pages=999,
+            category="Art",
+            cover=None,
+            price=99.99,
+        )
+        user = User.objects.create_user(username="testuser", email="a@example.com", password="testPassw0rd")
+        Review.objects.create(user_id=user.pk, book_id=book.pk, rating=1)
+
+    def test_user_label(self):
+        review = Review.objects.get(pk=1)
+        self.assertEqual(review._meta.get_field("user").verbose_name, "user")
+
+    def test_book_label(self):
+        review = Review.objects.get(pk=1)
+        self.assertEqual(review._meta.get_field("book").verbose_name, "book")
+
+    def test_rating_label(self):
+        review = Review.objects.get(pk=1)
+        self.assertEqual(review._meta.get_field("rating").verbose_name, "rating")
+
+    def test_comment_label(self):
+        review = Review.objects.get(pk=1)
+        self.assertEqual(review._meta.get_field("comment").verbose_name, "comment")
+
+    def test_date_label(self):
+        review = Review.objects.get(pk=1)
+        self.assertEqual(review._meta.get_field("date").verbose_name, "date")
+
+    def test_user_reference(self):
+        review = Review.objects.get(pk=1)
+        self.assertEqual(review.user.username, "testuser")
+
+    def test_book_reference(self):
+        review = Review.objects.get(pk=1)
+        self.assertEqual(review.book.title, "Django for Beginner")
+
+    def test_user_null_on_deletion(self):
+        user = User.objects.get(pk=1)
+        user.delete()
+        review = Review.objects.get(pk=1)
+        self.assertIsNone(review.user)
+
+    def test_book_cascade(self):
+        book = Book.objects.get(pk=1)
+        book.delete()
+        with self.assertRaises(ObjectDoesNotExist):
+            Review.objects.get(pk=1)
+
+    def test_rating_default(self):
+        review = Review.objects.get(pk=1)
+        default_rating = review._meta.get_field("rating").default
+        self.assertEqual(default_rating, 3)
+
+    def test_rating_validation(self):
+        review = Review.objects.get(pk=1)
+        review.rating = 0
+        with self.assertRaises(ValidationError):
+            review.clean_fields()
+        review.rating = 6
+        with self.assertRaises(ValidationError):
+            review.clean_fields()
+
+    def test_comment_null_blank(self):
+        review = Review.objects.get(pk=1)
+        null_check = review._meta.get_field("comment").null
+        blank_check = review._meta.get_field("comment").blank
+        self.assertEqual(null_check, True)
+        self.assertEqual(blank_check, True)
+        review.comment = None
+        review.clean_fields()
+
+    def test_str_method(self):
+        review = Review.objects.get(pk=1)
+        self.assertEqual(str(review), "User testuser rated 1-star for book 1 - Django for Beginner.")
+        user = User.objects.get(pk=1)
+        user.delete()
+        review = Review.objects.get(pk=1)
+        self.assertEqual(str(review), "A deleted user rated 1-star for book 1 - Django for Beginner.")

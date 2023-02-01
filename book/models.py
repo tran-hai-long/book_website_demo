@@ -48,7 +48,7 @@ class BookInCart(models.Model):
     number = models.PositiveSmallIntegerField(default=1, validators=[MinValueValidator(1)])
 
     def __str__(self):
-        return f"{self.number} copies of book {self.book} in cart {self.cart}."
+        return f"{self.number} copies of book {self.book.pk} - {self.book.title} in cart {self.cart.user.username}."
 
 
 class Review(models.Model):
@@ -60,9 +60,9 @@ class Review(models.Model):
 
     def __str__(self):
         if self.user:
-            return f"User {self.user.username} rated {self.rating}-star for book {self.book.pk} - {self.book.title}"
+            return f"User {self.user.username} rated {self.rating}-star for book {self.book.pk} - {self.book.title}."
         else:
-            return f"A deleted user rated {self.rating}-star for book {self.book.pk} - {self.book.title}"
+            return f"A deleted user rated {self.rating}-star for book {self.book.pk} - {self.book.title}."
 
 
 class Invoice(models.Model):
