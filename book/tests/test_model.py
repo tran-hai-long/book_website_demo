@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.test import TestCase
 from django.utils import timezone
 
-from book.models import Book, ShoppingCart, BookInCart
+from book.models import Book, ShoppingCart, BookInCart, Review
 
 
 class BookModelTest(TestCase):
@@ -33,91 +33,91 @@ class BookModelTest(TestCase):
         )
 
     def test_title_label(self):
-        book = Book.objects.get(id=1)
+        book = Book.objects.get(pk=1)
         field_label = book._meta.get_field("title").verbose_name
         self.assertEqual(field_label, "title")
 
     def test_title_max_length(self):
-        book = Book.objects.get(id=1)
+        book = Book.objects.get(pk=1)
         max_length = book._meta.get_field("title").max_length
         self.assertEqual(max_length, 99)
 
     def test_author_label(self):
-        book = Book.objects.get(id=1)
+        book = Book.objects.get(pk=1)
         field_label = book._meta.get_field("author").verbose_name
         self.assertEqual(field_label, "author")
 
     def test_author_max_length(self):
-        book = Book.objects.get(id=1)
+        book = Book.objects.get(pk=1)
         max_length = book._meta.get_field("author").max_length
         self.assertEqual(max_length, 99)
 
     def test_book_description_label(self):
-        book = Book.objects.get(id=1)
+        book = Book.objects.get(pk=1)
         field_label = book._meta.get_field("book_description").verbose_name
         self.assertEqual(field_label, "book description")
 
     def test_book_description_null_blank(self):
-        book = Book.objects.get(id=1)
+        book = Book.objects.get(pk=1)
         null_check = book._meta.get_field("book_description").null
         blank_check = book._meta.get_field("book_description").blank
         self.assertEqual(null_check, True)
         self.assertEqual(blank_check, True)
 
     def test_release_date_label(self):
-        book = Book.objects.get(id=1)
+        book = Book.objects.get(pk=1)
         field_label = book._meta.get_field("release_date").verbose_name
         self.assertEqual(field_label, "release date")
 
     def test_number_of_pages_date_label(self):
-        book = Book.objects.get(id=1)
+        book = Book.objects.get(pk=1)
         field_label = book._meta.get_field("number_of_pages").verbose_name
         self.assertEqual(field_label, "number of pages")
 
     def test_number_of_pages_default(self):
-        book = Book.objects.get(id=1)
+        book = Book.objects.get(pk=1)
         default_number = book._meta.get_field("number_of_pages").default
         self.assertEqual(default_number, 0)
 
     def test_category_label(self):
-        book = Book.objects.get(id=1)
+        book = Book.objects.get(pk=1)
         field_label = book._meta.get_field("category").verbose_name
         self.assertEqual(field_label, "category")
 
     def test_category_max_length(self):
-        book = Book.objects.get(id=1)
+        book = Book.objects.get(pk=1)
         max_length = book._meta.get_field("category").max_length
         self.assertEqual(max_length, 99)
 
     def test_category_choices(self):
-        book = Book.objects.get(id=1)
+        book = Book.objects.get(pk=1)
         choices = book._meta.get_field("category").choices
         self.assertEqual(choices, book.CATEGORY_CHOICES)
 
     def test_cover_label(self):
-        book = Book.objects.get(id=1)
+        book = Book.objects.get(pk=1)
         field_label = book._meta.get_field("cover").verbose_name
         self.assertEqual(field_label, "cover")
 
     def test_cover_null_blank(self):
-        book = Book.objects.get(id=1)
+        book = Book.objects.get(pk=1)
         null_check = book._meta.get_field("cover").null
         blank_check = book._meta.get_field("cover").blank
         self.assertEqual(null_check, True)
         self.assertEqual(blank_check, True)
 
     def test_cover_path(self):
-        book = Book.objects.get(id=1)
+        book = Book.objects.get(pk=1)
         path = book._meta.get_field("cover").upload_to
         self.assertEqual(path, "book/%Y/%m/%d/%H%M%S/")
 
     def test_price_label(self):
-        book = Book.objects.get(id=1)
+        book = Book.objects.get(pk=1)
         field_label = book._meta.get_field("price").verbose_name
         self.assertEqual(field_label, "price")
 
     def test_price_default(self):
-        book = Book.objects.get(id=1)
+        book = Book.objects.get(pk=1)
         default_number = book._meta.get_field("price").default
         self.assertEqual(default_number, 0)
 
@@ -128,7 +128,7 @@ class BookModelTest(TestCase):
             book.clean_fields()
 
     def test_str_method(self):
-        book = Book.objects.get(id=1)
+        book = Book.objects.get(pk=1)
         self.assertEqual(str(book), "Django for Beginner by Tran Hai Long")
 
 
@@ -148,7 +148,7 @@ class ShoppingCartModelTest(TestCase):
         self.assertEqual(user, "user")
 
     def test_cascade_on_user_deletion(self):
-        user = User.objects.get(id=1)
+        user = User.objects.get(pk=1)
         user.delete()
         with self.assertRaises(ObjectDoesNotExist):
             ShoppingCart.objects.get(user_id=1)
@@ -176,47 +176,47 @@ class BookInCartModelTest(TestCase):
         BookInCart.objects.create(cart_id=cart.pk, book_id=book.pk, number=1)
 
     def test_cart_label(self):
-        book_in_cart = BookInCart.objects.get(id=1)
+        book_in_cart = BookInCart.objects.get(pk=1)
         cart = book_in_cart._meta.get_field("cart").verbose_name
         self.assertEqual(cart, "cart")
 
     def test_book_label(self):
-        book_in_cart = BookInCart.objects.get(id=1)
+        book_in_cart = BookInCart.objects.get(pk=1)
         book = book_in_cart._meta.get_field("book").verbose_name
         self.assertEqual(book, "book")
 
     def test_number_label(self):
-        book_in_cart = BookInCart.objects.get(id=1)
+        book_in_cart = BookInCart.objects.get(pk=1)
         number = book_in_cart._meta.get_field("number").verbose_name
         self.assertEqual(number, "number")
 
     def test_cart_reference(self):
-        book_in_cart = BookInCart.objects.get(id=1)
+        book_in_cart = BookInCart.objects.get(pk=1)
         self.assertEqual(book_in_cart.cart.user.username, "testuser")
 
     def test_book_reference(self):
-        book_in_cart = BookInCart.objects.get(id=1)
+        book_in_cart = BookInCart.objects.get(pk=1)
         self.assertEqual(book_in_cart.book.title, "Django for Beginner")
 
     def test_cart_cascade(self):
-        cart = ShoppingCart.objects.get(id=1)
+        cart = ShoppingCart.objects.get(pk=1)
         cart.delete()
         with self.assertRaises(ObjectDoesNotExist):
-            BookInCart.objects.get(id=1)
+            BookInCart.objects.get(pk=1)
 
     def test_book_cascade(self):
-        book = Book.objects.get(id=1)
+        book = Book.objects.get(pk=1)
         book.delete()
         with self.assertRaises(ObjectDoesNotExist):
-            BookInCart.objects.get(id=1)
+            BookInCart.objects.get(pk=1)
 
     def test_number_default(self):
-        book_in_cart = BookInCart.objects.get(id=1)
+        book_in_cart = BookInCart.objects.get(pk=1)
         default_number = book_in_cart._meta.get_field("number").default
         self.assertEqual(default_number, 1)
 
     def test_number_validator(self):
-        book_in_cart = BookInCart.objects.get(id=1)
+        book_in_cart = BookInCart.objects.get(pk=1)
         book_in_cart.number = 0
         with self.assertRaises(ValidationError):
             book_in_cart.clean_fields()
