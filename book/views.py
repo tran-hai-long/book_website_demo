@@ -2,11 +2,10 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Avg
 from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, TemplateView
 
 from book.forms import BookSearchForm, ReviewForm, BookNumberForm, CheckoutForm
 from book.models import Book, ShoppingCart, BookInCart, Review, Invoice, PurchasedBook
@@ -163,8 +162,8 @@ def create_invoice(request):
         return HttpResponse("Error processing transaction.")
 
 
-def checkout_complete(request):
-    return render(request, "book/checkout_complete.html")
+class CheckoutCompleteView(TemplateView):
+    template_name = "book/checkout_complete.html"
 
 
 @method_decorator(login_required, name="dispatch")
