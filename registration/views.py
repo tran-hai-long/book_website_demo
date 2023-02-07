@@ -5,13 +5,14 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from django.contrib.auth.password_validation import validate_password
+from django.views import View
 
 from book.models import ShoppingCart
 from registration.forms import RegistrationForm
 
 
-def registration_page(request):
-    if request.method == "POST":
+class RegistrationPage(View):
+    def post(self, request, *args, **kwargs):
         form = RegistrationForm(request.POST)
         # Check for duplicate username
         username = form.data["username"]
@@ -42,6 +43,7 @@ def registration_page(request):
             return HttpResponseRedirect(reverse("book_list"))
         else:
             return HttpResponse("User creation error.")
-    else:
+
+    def get(self, request, *args, **kwargs):
         context = {"form": RegistrationForm()}
         return render(request, "registration/registration.html", context)
