@@ -178,7 +178,7 @@ class InvoiceView(ListView):
 @method_decorator(login_required, name="dispatch")
 class PurchasedBookView(ListView):
     model = PurchasedBook
-
+    template_name = "book/purchased_book_list.html"
     def get_queryset(self):
         invoice_id = self.kwargs["pk"]
         invoice = Invoice.objects.get(pk=invoice_id)
