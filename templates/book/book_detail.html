@@ -6,8 +6,8 @@
             <h1 class="mb-5 text-center">Book details</h1>
             {% if user.is_authenticated %}
                 <div class="text-end mb-3">
-                    <a href="{% url 'shopping_cart' %}" class="btn btn-outline-secondary">Shopping Cart</a>
-                    <a href="{% url 'invoice_list' %}" class="btn btn-outline-info">Purchase History</a>
+                    <a href="{% url 'books:shopping_cart' %}" class="btn btn-outline-secondary">Shopping Cart</a>
+                    <a href="{% url 'books:invoice_list' %}" class="btn btn-outline-info">Purchase History</a>
                 </div>
             {% endif %}
             <section class="col-md-6">
@@ -32,7 +32,7 @@
                         <p id="already-in-cart">Book already in cart.</p>
                     {% else %}
                         <div class="container text-center">
-                            <form method="post" action="{% url 'add_book_to_cart' book.pk %}" class="row">
+                            <form method="post" action="{% url 'books:add_to_cart' book.pk %}" class="row">
                                 {% csrf_token %}
                                 <div class="col-6 mb-3">{{ book_number_form }}</div>
                                 <button class="btn btn-outline-primary mb-3 col-auto" id="add-to-cart">Add to shopping cart</button>
@@ -45,7 +45,7 @@
         {# Only display review form if the user had not reviewed already #}
         <div class="container row mb-3">
             {% if user.is_authenticated and not this_user_review %}
-                <form method="post" action="{% url 'review_book' book.pk %}">
+                <form method="post" action="{% url 'books:review' book.pk %}">
                     {% csrf_token %}
                     <div class="col-md-6 col-lg-4">{{ review_form }}</div>
                     <button class="btn btn-outline-primary col-auto">Review</button>

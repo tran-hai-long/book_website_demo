@@ -23,7 +23,7 @@
                     <h3>Total price: {{ total_price }}$</h3>
                 </section>
                 <section class="col-md-6">
-                    <form method="post" action="{% url 'create_invoice' %}">
+                    <form method="post" action="{% url 'books:create_invoice' %}">
                         {% csrf_token %}
                         {{ form }}
                         <button class="btn btn-primary">Purchase</button>

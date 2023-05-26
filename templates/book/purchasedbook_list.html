@@ -17,7 +17,7 @@
                         <td>{{ purchased_book.book.title }}</td>
                         <td>{{ purchased_book.number }}</td>
                         <td>
-                            <a href="{% url 'book_detail' purchased_book.book.pk %}" class="btn btn-info">View</a>
+                            <a href="{% url 'books:detail' purchased_book.book.pk %}" class="btn btn-info">View</a>
                         </td>
                     </tr>
                 {% endfor %}

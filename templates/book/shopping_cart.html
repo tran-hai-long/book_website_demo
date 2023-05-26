@@ -21,7 +21,7 @@
                         <td>{{ book_in_cart.book.price }}</td>
                         <td>{{ book_in_cart.number }}</td>
                         <td>
-                            <a href="{% url 'remove_from_cart' book_in_cart.book.pk %}"
+                            <a href="{% url 'books:remove_from_cart' book_in_cart.book.pk %}"
                                class="btn btn-outline-danger">Remove</a>
                         </td>
                     </tr>
@@ -29,7 +29,7 @@
             </table>
             <div class="text-end">
                 <strong class="mx-3">Total price: {{ total_price }}$</strong>
-                <a href="{% url 'checkout_page' %}" class="btn btn-primary">Checkout</a>
+                <a href="{% url 'books:checkout_page' %}" class="btn btn-primary">Checkout</a>
             </div>
         {% else %}
             <h1 class="text-center">Your shopping cart is empty.</h1>

@@ -75,7 +75,7 @@ def review_book(request, pk):
         )
     else:
         return HttpResponse("Error when trying to review this book.")
-    return HttpResponseRedirect(reverse("book_detail", args=[pk]))
+    return HttpResponseRedirect(reverse("books:detail", args=[pk]))
 
 
 # Get all books in user's shopping cart and calculate the total price
@@ -105,14 +105,14 @@ def add_to_cart(request, pk):
         BookInCart.objects.create(cart_id=cart.pk, book_id=pk, number=form.cleaned_data["number"])
     else:
         return HttpResponse("Error when adding book to cart.")
-    return HttpResponseRedirect(reverse("book_detail", args=[pk]))
+    return HttpResponseRedirect(reverse("books:detail", args=[pk]))
 
 
 @login_required
 def remove_from_cart(request, pk):
     cart = ShoppingCart.objects.get(user_id=request.user.pk)
     BookInCart.objects.get(cart_id=cart.pk, book_id=pk).delete()
-    return HttpResponseRedirect(reverse("shopping_cart"))
+    return HttpResponseRedirect(reverse("books:shopping_cart"))
 
 
 # Display a form for the user to type in shipping address, and calculate total price of invoice
@@ -157,7 +157,7 @@ def create_invoice(request):
                 invoice_id=invoice.pk, book_id=book_in_cart.book.pk, number=book_in_cart.number
             )
             book_in_cart.delete()
-        return HttpResponseRedirect(reverse("checkout_complete"))
+        return HttpResponseRedirect(reverse("books:checkout_complete"))
     else:
         return HttpResponse("Error processing transaction.")
 

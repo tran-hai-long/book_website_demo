@@ -40,7 +40,7 @@ class RegistrationPage(View):
                 last_name=form.cleaned_data["last_name"],
             )
             ShoppingCart.objects.create(user_id=user.pk)
-            return HttpResponseRedirect(reverse("book_list"))
+            return HttpResponseRedirect(reverse("books:list"))
         else:
             return HttpResponse("User creation error.")
 

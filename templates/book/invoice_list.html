@@ -17,7 +17,7 @@
                         <td>{{ invoice.date }}</td>
                         <td>{{ invoice.total_price }}$</td>
                         <td>
-                            <a href="{% url 'purchased_book_list' invoice.pk %}" class="btn btn-info">View</a>
+                            <a href="{% url 'books:purchased_book_list' invoice.pk %}" class="btn btn-info">View</a>
                         </td>
                     </tr>
                 {% endfor %}
